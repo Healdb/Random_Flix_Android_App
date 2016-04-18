@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Random Flix</string>
+    <string name="input_search">Input Show Name</string>
+    <string name="button_send">Submit</string>
+    <string name="button_random">Play Random Episode</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_display_message">Selected Show</string>
+    <string name="title_activity_search_show">Search Show</string>
+    <string name="banner_ad_bottom_id">ca-app-pub-4512071872551820/7566152193</string>
+    <string name="banner_ad__bottom2_id">ca-app-pub-4512071872551820/9042885397</string>
+
+</resources>
