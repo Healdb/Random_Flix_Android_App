@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
                 final String item = (String) parent.getItemAtPosition(position);
                 AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
-                adb.setTitle("Delete?");
-                adb.setMessage("Are you sure you want to delete " + item);
+                adb.setTitle("Remove?");
+                adb.setMessage("Are you sure you want to unfavorite " + item);
                 adb.setNegativeButton("Cancel", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         favorites.remove(item);
         writeData(ctx);
     }
-    public static void removeShowReset(final Context ctx, final String d){
+    public static void removeShowData(final Context ctx, final String d){
         String item = d.substring(0, d.indexOf("($)"));
         int index = favorites.indexOf(item);
         data.remove(index);
