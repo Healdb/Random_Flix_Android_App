@@ -5,9 +5,11 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -35,6 +37,7 @@ import java.io.InputStreamReader;
 
 public class DisplayMessageActivity extends AppCompatActivity {
     private String data;
+    private Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,60 +112,63 @@ public class DisplayMessageActivity extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
-        if(MainActivity.data.indexOf(data)!=-1) {
-            getMenuInflater().inflate(R.menu.menu_remove, menu);
+        getMenuInflater().inflate(R.menu.menu_show, menu);
+        if (!MainActivity.data.contains(this.data)) {
+            MenuItem item = menu.findItem(R.id.action_show);
+            Drawable icon = ContextCompat.getDrawable(DisplayMessageActivity.this, R.mipmap.ic_star_off);
+            item.setIcon(icon);
+            item.setTitle("Add");
         }
-        else {
-            getMenuInflater().inflate(R.menu.menu_show, menu);
+        else{
+            MenuItem item = menu.findItem(R.id.action_show);
+            Drawable icon = ContextCompat.getDrawable(DisplayMessageActivity.this, R.mipmap.ic_star_on);
+            item.setIcon(icon);
+            item.setTitle("Remove");
         }
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        final boolean reload = true;
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_search) {
-            AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            System.out.println("Add show");
-            String showName = data.substring(0, data.indexOf("($)"));
-            if(!MainActivity.data.contains(this.data)) {
-                adb.setMessage(showName + " has been added to your favorites.");
-                adb.setPositiveButton("Okay", new AlertDialog.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        MainActivity.addFavorite(data, DisplayMessageActivity.this);
-                    }
-                });
-                adb.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        MainActivity.addFavorite(data, DisplayMessageActivity.this);
-                    }
-                });
-            } else {
-                adb.setTitle("Already in Favorites");
-                adb.setMessage(showName + " is already in your favorites!");
-                adb.setNeutralButton("Okay", null);
-            }
-            adb.show();
-        }
-        if (id == R.id.action_remove) {
-            System.out.println("Remove show");
-            AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            adb.setTitle("Unfavorite?");
-            adb.setMessage("Are you sure you want to unfavorite " + data.substring(0, data.indexOf("($)")));
-            adb.setNegativeButton("No", null);
-            adb.setPositiveButton("Yes", new AlertDialog.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    MainActivity.removeShowReset(DisplayMessageActivity.this, data);
+        if(item.getTitle()!=null) {
+            //noinspection SimplifiableIfStatement
+            if (item.getTitle().equals("Add")) {
+                AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                System.out.println("Add show");
+                String showName = data.substring(0, data.indexOf("($)"));
+                if (!MainActivity.data.contains(this.data)) {
+                    MainActivity.addFavorite(data, DisplayMessageActivity.this);
+                    Drawable icon = ContextCompat.getDrawable(this, R.mipmap.ic_star_on);;
+                    item.setIcon(icon);
+                    item.setTitle("Remove");
+                } else {
+                    adb.setTitle("Already in Favorites");
+                    adb.setMessage(showName + " is already in your favorites!");
+                    adb.setNeutralButton("Okay", null);
+                    adb.show();
                 }
-            });
-            adb.show();
+            }
+            else if (item.getTitle().equals("Remove")) {
+                System.out.println("Remove show");
+                AlertDialog.Builder adb = new AlertDialog.Builder(this);
+                adb.setTitle("Unfavorite?");
+                adb.setMessage("Are you sure you want to unfavorite " + data.substring(0, data.indexOf("($)")));
+                adb.setNegativeButton("No", null);
+                adb.setPositiveButton("Yes", new AlertDialog.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.removeShowReset(DisplayMessageActivity.this, data);
+                        Drawable icon = ContextCompat.getDrawable(DisplayMessageActivity.this, R.mipmap.ic_star_off);
+                        item.setIcon(icon);
+                        item.setTitle("Add");
+                    }
+                });
+                adb.show();
+            }
         }
 
         return super.onOptionsItemSelected(item);

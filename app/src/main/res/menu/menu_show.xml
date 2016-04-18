@@ -8,9 +8,9 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />-->
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_show"
         android:orderInCategory="100"
-        android:title="Add To Favorites"
+        android:title="ADD"
         android:icon="@mipmap/ic_star_off"
         app:showAsAction="ifRoom"
         ></item>

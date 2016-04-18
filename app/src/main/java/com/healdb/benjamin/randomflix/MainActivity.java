@@ -135,9 +135,6 @@ public class MainActivity extends AppCompatActivity {
         data.remove(index);
         favorites.remove(item);
         writeData(ctx);
-        Intent intent = new Intent(ctx, DisplayMessageActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, d);
-        ctx.startActivity(intent);
     }
     public void showShow(String showData){
         Intent intent = new Intent(this, DisplayMessageActivity.class);
@@ -252,8 +249,5 @@ public class MainActivity extends AppCompatActivity {
         favorites.add(showName);
         data.add(d);
         writeData(ctx);
-        Intent intent = new Intent(ctx, DisplayMessageActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, d);
-        ctx.startActivity(intent);
     }
 }
